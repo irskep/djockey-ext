@@ -1,0 +1,20 @@
+{
+  "name": "@djockey/linkmapper-typedoc",
+  "bin": "index.js",
+  "version": "0.0.1",
+  "type": "module",
+  "prepublish": "tsc -p .",
+  "scripts": {
+    "build": "npx tsc -p ."
+  },
+  "devDependencies": {
+    "@types/argparse": "^2.0.16",
+    "@types/bun": "latest",
+    "@types/node": "^22.5.1",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "argparse": "^2.0.1",
+    "typedoc": "^0.26.6"
+  }
+}
