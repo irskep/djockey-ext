@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 type LinkMapping = {
     linkDestination: string;
     relativeURL: string;

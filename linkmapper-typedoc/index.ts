@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { ArgumentParser } from "argparse";
 import { readFileSync } from "fs";
 import { writeFile } from "fs/promises";
