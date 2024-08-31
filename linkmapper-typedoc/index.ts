@@ -105,4 +105,4 @@ export async function getURLs(projectReflectionJSON: unknown) {
   return urls;
 }
 
-await main();
+main();

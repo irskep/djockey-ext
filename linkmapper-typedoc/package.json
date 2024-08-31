@@ -1,8 +1,7 @@
 {
   "name": "@djockey/linkmapper-typedoc",
   "bin": "index.js",
-  "version": "0.0.3",
-  "type": "module",
+  "version": "0.0.4",
   "prepublish": "tsc -p .",
   "scripts": {
     "build": "npx tsc -p ."

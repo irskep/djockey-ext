@@ -1,10 +1,16 @@
-import { ArgumentParser } from "argparse";
-import { readFileSync } from "fs";
-import { writeFile } from "fs/promises";
-import path from "path";
-import { Application, DefaultTheme, Deserializer, FileRegistry, ReflectionKind, Renderer, } from "typedoc";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getURLs = getURLs;
+const argparse_1 = require("argparse");
+const fs_1 = require("fs");
+const promises_1 = require("fs/promises");
+const path_1 = __importDefault(require("path"));
+const typedoc_1 = require("typedoc");
 async function main() {
-    const p = new ArgumentParser({
+    const p = new argparse_1.ArgumentParser({
         description: "Generates a Djockey link mapping file given a TypeDoc JSON file.",
     });
     p.add_argument("typedoc_json_file_path", {
@@ -14,23 +20,23 @@ async function main() {
         help: "Where to save the output, for example $YOUR_REPO/docs/link_mapping.json",
     });
     const args = p.parse_args();
-    const json = JSON.parse(readFileSync(path.resolve(args.typedoc_json_file_path), "utf8"));
+    const json = JSON.parse((0, fs_1.readFileSync)(path_1.default.resolve(args.typedoc_json_file_path), "utf8"));
     const result = await getURLs(json);
     const output = {
         version: 0,
         namespaces: ["typescript", "ts", "typedoc"],
         linkMappings: result,
     };
-    await writeFile(args.output_path, JSON.stringify(output, null, "  "));
+    await (0, promises_1.writeFile)(args.output_path, JSON.stringify(output, null, "  "));
 }
 function getFullPath(model) {
-    if (!model.parent || model.parent.kind === ReflectionKind.Project) {
+    if (!model.parent || model.parent.kind === typedoc_1.ReflectionKind.Project) {
         return model.name;
     }
     return `${getFullPath(model.parent)}.${model.name}`;
 }
 function getAliases(model) {
-    if (model.kind === ReflectionKind.Project)
+    if (model.kind === typedoc_1.ReflectionKind.Project)
         return [];
     const path = getFullPath(model);
     const parts = path.split(".");
@@ -42,11 +48,11 @@ function getAliases(model) {
     }
     return result;
 }
-export async function getURLs(projectReflectionJSON) {
-    const app = await Application.bootstrap();
-    const registry = new FileRegistry();
-    const proj = new Deserializer(app).reviveProject(projectReflectionJSON, "djockey-api", path.resolve("."), registry);
-    const theme = new DefaultTheme(new Renderer(app));
+async function getURLs(projectReflectionJSON) {
+    const app = await typedoc_1.Application.bootstrap();
+    const registry = new typedoc_1.FileRegistry();
+    const proj = new typedoc_1.Deserializer(app).reviveProject(projectReflectionJSON, "djockey-api", path_1.default.resolve("."), registry);
+    const theme = new typedoc_1.DefaultTheme(new typedoc_1.Renderer(app));
     const urlMappings = theme.getUrls(proj);
     const urls = new Array();
     function visit(model) {
@@ -66,5 +72,5 @@ export async function getURLs(projectReflectionJSON) {
     }
     return urls;
 }
-await main();
+main();
 //# sourceMappingURL=index.js.map
