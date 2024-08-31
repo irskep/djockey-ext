@@ -1,5 +1,5 @@
 import { ArgumentParser } from "argparse";
-import { readFileSync, writeFileSync } from "fs";
+import { readFileSync } from "fs";
 import { writeFile } from "fs/promises";
 import path from "path";
 import {
