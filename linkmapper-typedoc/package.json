@@ -1,5 +1,6 @@
 {
   "name": "@djockey/linkmapper-typedoc",
+  "license": "MIT",
   "bin": "index.js",
   "version": "0.0.5",
   "prepublish": "tsc -p .",
