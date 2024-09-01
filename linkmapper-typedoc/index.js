@@ -56,10 +56,19 @@ async function getURLs(projectReflectionJSON) {
     const theme = new typedoc_1.DefaultTheme(new typedoc_1.Renderer(app));
     const urlMappings = theme.getUrls(proj);
     const urls = new Array();
+    const seenDestinationURLPairs = new Set();
     function visit(model) {
         if (model.url) {
             for (const alias of getAliases(model)) {
-                urls.push({ linkDestination: alias, relativeURL: model.url });
+                const destURLPair = `${alias}:::${model.url}`;
+                if (seenDestinationURLPairs.has(destURLPair))
+                    continue;
+                seenDestinationURLPairs.add(destURLPair);
+                urls.push({
+                    linkDestination: alias,
+                    relativeURL: model.url,
+                    defaultLabel: model.name,
+                });
             }
         }
         if (model.children) {

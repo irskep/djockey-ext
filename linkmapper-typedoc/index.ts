@@ -15,6 +15,7 @@ import {
 type LinkMapping = {
   linkDestination: string;
   relativeURL: string;
+  defaultLabel: string;
 };
 
 type LinkMappingDoc = {
@@ -85,10 +86,19 @@ export async function getURLs(projectReflectionJSON: unknown) {
 
   const urls = new Array<LinkMapping>();
 
+  const seenDestinationURLPairs = new Set<string>();
+
   function visit(model: any) {
     if (model.url) {
       for (const alias of getAliases(model)) {
-        urls.push({ linkDestination: alias, relativeURL: model.url });
+        const destURLPair = `${alias}:::${model.url}`;
+        if (seenDestinationURLPairs.has(destURLPair)) continue;
+        seenDestinationURLPairs.add(destURLPair);
+        urls.push({
+          linkDestination: alias,
+          relativeURL: model.url,
+          defaultLabel: model.name,
+        });
       }
     }
 
