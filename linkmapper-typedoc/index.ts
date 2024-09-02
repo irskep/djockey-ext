@@ -88,16 +88,34 @@ export async function getURLs(projectReflectionJSON: unknown) {
 
   const seenDestinationURLPairs = new Set<string>();
 
+  const reflectionKindsNeedingParentInDefaultName = new Set<ReflectionKind>([
+    ReflectionKind.Method,
+    ReflectionKind.Constructor,
+    ReflectionKind.ConstructorSignature,
+    ReflectionKind.EnumMember,
+    ReflectionKind.GetSignature,
+    ReflectionKind.MethodContainer,
+    ReflectionKind.Parameter,
+    ReflectionKind.Property,
+    ReflectionKind.VariableOrProperty,
+  ]);
+
   function visit(model: any) {
     if (model.url) {
       for (const alias of getAliases(model)) {
         const destURLPair = `${alias}:::${model.url}`;
         if (seenDestinationURLPairs.has(destURLPair)) continue;
         seenDestinationURLPairs.add(destURLPair);
+
+        const defaultLabel = reflectionKindsNeedingParentInDefaultName.has(
+          model.kind
+        )
+          ? `${model.parent.name}.${model.name}`
+          : model.name;
         urls.push({
           linkDestination: alias,
           relativeURL: model.url,
-          defaultLabel: model.name,
+          defaultLabel,
         });
       }
     }

@@ -2,7 +2,7 @@
   "name": "@djockey/linkmapper-typedoc",
   "license": "MIT",
   "bin": "index.js",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "prepublish": "tsc -p .",
   "scripts": {
     "build": "npx tsc -p ."
